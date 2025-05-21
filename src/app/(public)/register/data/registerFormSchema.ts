@@ -7,7 +7,7 @@ export const registerFormSchema = z
     password: z
       .string()
       .min(8, { message: "A senha deve ter pelo menos 8 caracteres" })
-      .max(25, { message: "A senha deve ter no máximo 20 caracteres" }),
+      .max(25, { message: "A senha deve ter no máximo 25 caracteres" }),
     name: z
       .string()
       .min(3, { message: "O nome deve ter pelo menos 3 caracteres" }),
