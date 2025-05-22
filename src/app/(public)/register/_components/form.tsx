@@ -20,6 +20,10 @@ import {
   type RegisterFormSchema,
 } from "../data/registerFormSchema";
 
+import { useRegister } from "@/hooks/auth/useRegister";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+
 export const RegisterForm = () => {
   const {
     register,
@@ -31,13 +35,34 @@ export const RegisterForm = () => {
     mode: "onChange",
   });
 
+  const router = useRouter();
+  const { mutateAsync, isPending } = useRegister();
+
   const userRoles = [
     { value: UserRoles.STUDENT, label: strings.userRoles[UserRoles.STUDENT] },
     { value: UserRoles.TEACHER, label: strings.userRoles[UserRoles.TEACHER] },
   ];
 
-  const handleRegisterUser = (data: RegisterFormSchema) => {
-    console.log(data);
+  const handleRegisterUser = async (data: RegisterFormSchema) => {
+    try {
+      const { name, userName, email, password, role } = data;
+
+      const userData = {
+        name,
+        email,
+        username: userName,
+        password,
+        roles: UserRoles[role as UserRoles],
+      };
+
+      await mutateAsync(userData);
+
+      toast.success("Cadastro realizado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao fazer registro:", error);
+    } finally {
+      router.push("/sign-in");
+    }
   };
 
   return (
@@ -55,6 +80,14 @@ export const RegisterForm = () => {
             maxLength={100}
             registration={register("name")}
             error={errors.name}
+          />
+          <FormInput
+            name="userName"
+            placeholder="Usuário"
+            className="w-full"
+            maxLength={100}
+            registration={register("userName")}
+            error={errors.userName}
           />
           <FormInput
             name="email"
@@ -110,7 +143,12 @@ export const RegisterForm = () => {
             )}
           </div>
 
-          <Button type="submit" className="w-full bg-edupost-blue-primary">
+          <Button
+            type="submit"
+            disabled={isPending}
+            isLoading={isPending}
+            className="w-full bg-edupost-blue-primary"
+          >
             Cadastrar
           </Button>
         </div>

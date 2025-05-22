@@ -11,6 +11,9 @@ export const registerFormSchema = z
     name: z
       .string()
       .min(3, { message: "O nome deve ter pelo menos 3 caracteres" }),
+    userName: z
+      .string()
+      .min(3, { message: "O usuário deve ter pelo menos 3 caracteres" }),
     role: z.enum([UserRoles.STUDENT, UserRoles.TEACHER], {
       errorMap: () => ({ message: "Opção inválida" }),
     }),
