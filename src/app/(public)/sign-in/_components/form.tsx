@@ -11,6 +11,8 @@ import {
   type SignInFormSchema,
 } from "../data/signinFormSchema";
 
+import { useLogin } from "@/hooks/auth/useLogin";
+
 export const SigninForm = () => {
   const {
     register,
@@ -21,8 +23,16 @@ export const SigninForm = () => {
     mode: "onChange",
   });
 
-  const handleSignInUser = (data: SignInFormSchema) => {
-    console.log(data);
+  const { mutateAsync, isPending } = useLogin();
+
+  const handleSignInUser = async (data: SignInFormSchema) => {
+    try {
+      await mutateAsync(data);
+
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+    }
   };
 
   return (
@@ -51,7 +61,11 @@ export const SigninForm = () => {
             registration={register("password")}
             error={errors.password}
           />
-          <Button type="submit" className="w-full bg-edupost-blue-primary">
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="w-full bg-edupost-blue-primary"
+          >
             Entrar
           </Button>
         </div>
