@@ -12,6 +12,8 @@ import {
 } from "../data/signinFormSchema";
 
 import { useLogin } from "@/hooks/auth/useLogin";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const SigninForm = () => {
   const {
@@ -23,15 +25,23 @@ export const SigninForm = () => {
     mode: "onChange",
   });
 
+  const [isInvalidCredentials, setIsInvalidCredentials] =
+    useState<boolean>(false);
   const { mutateAsync, isPending } = useLogin();
+  const router = useRouter();
 
   const handleSignInUser = async (data: SignInFormSchema) => {
     try {
       await mutateAsync(data);
 
-      window.location.href = "/";
-    } catch (error) {
+      setIsInvalidCredentials(false);
+    } catch (error: any) {
+      if (error?.message === "invalid credentials") {
+        setIsInvalidCredentials(true);
+      }
       console.error("Erro ao fazer login:", error);
+    } finally {
+      router.push("/");
     }
   };
 
@@ -61,8 +71,15 @@ export const SigninForm = () => {
             registration={register("password")}
             error={errors.password}
           />
+
+          {isInvalidCredentials && (
+            <div className="bg-red-100 p-3 rounded-md">
+              <p className="text-red-500 text-sm">E-mail ou senha inválidos</p>
+            </div>
+          )}
           <Button
             type="submit"
+            isLoading={isPending}
             disabled={isPending}
             className="w-full bg-edupost-blue-primary"
           >
