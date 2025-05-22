@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Geist } from "next/font/google";
+import { Providers } from "./providers/providers";
+import { ToastContainer } from 'react-toastify';
+
+const geist = Geist({
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,8 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className={geist.className}>
+      <body>
+        <Providers>{children}</Providers>
+        <ToastContainer />
+      </body>
     </html>
   );
 }
