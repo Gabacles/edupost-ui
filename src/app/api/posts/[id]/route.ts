@@ -39,3 +39,48 @@ export async function GET(
     );
   }
 }
+
+export async function PUT(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
+  try {
+    const { id } = await context.params;
+
+    const authToken = request.cookies.get("access_token")?.value;
+    if (!authToken) {
+      return NextResponse.json(
+        { error: "Token de autenticação ausente." },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVICES_BASE_URL}/posts/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return NextResponse.json(data, { status: res.status });
+    }
+
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error("Erro ao editar post:", error);
+    return NextResponse.json(
+      { error: "Erro inesperado ao editar post." },
+      { status: 500 }
+    );
+  }
+}
