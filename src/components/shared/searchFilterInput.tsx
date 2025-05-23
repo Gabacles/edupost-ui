@@ -56,7 +56,7 @@ export const SearchFilterInput = ({
   return (
     <div
       className={cn(
-        "hover:border-light-bg group relative flex w-full flex-row items-center md:w-[210px] lg:w-[260px]",
+        "hover:border-light-bg group relative flex w-full flex-row items-center md:w-[210px] lg:w-[350px]",
         className
       )}
     >
