@@ -7,6 +7,7 @@ import { randomImages } from "@/styles/randomImages";
 import { SearchFilterInput } from "@/components/shared/searchFilterInput";
 import { PostListSkeleton } from "./postListSkeleton";
 import { PostNotFound } from "./postNotFound";
+import { AuthorOnlySwitch } from "./authorOnlySwitch";
 
 export const PostList = () => {
   const { data, isLoading, error } = usePosts();
@@ -22,7 +23,10 @@ export const PostList = () => {
 
   return (
     <div className="w-[80%] min-w-96 my-6">
-      <SearchFilterInput />
+      <div className="flex items-center justify-between mb-4">
+        <SearchFilterInput />
+        <AuthorOnlySwitch />
+      </div>
       {isLoading ? (
         <PostListSkeleton />
       ) : !data.length ? (
