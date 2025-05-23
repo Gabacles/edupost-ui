@@ -6,7 +6,7 @@ import { useQueryParams } from "../useQueryParams";
 
 export function usePosts() {
   const searchParams = useSearchParams();
-  const keys = ["search", "page", "limit"];
+  const keys = ["search", "page", "limit", "authorId"];
   const { buildQueryParams } = useQueryParams();
 
   const params: Record<string, string | null> = keys.reduce((acc: any, key) => {
