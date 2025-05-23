@@ -11,9 +11,9 @@ import { AuthorOnlySwitch } from "./authorOnlySwitch";
 
 export const PostList = () => {
   const { data, isLoading, error } = usePosts();
-  const res: Post[] = data || [];
+  const posts: Post[] = data?.data || [];
 
-  const postsWithImages = res.map((post) => {
+  const postsWithImages = posts.map((post) => {
     const randomIndex = Math.floor(Math.random() * randomImages.length);
     return {
       ...post,
@@ -29,7 +29,7 @@ export const PostList = () => {
       </div>
       {isLoading ? (
         <PostListSkeleton />
-      ) : !data.length ? (
+      ) : !posts.length ? (
         <PostNotFound />
       ) : (
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-4">
