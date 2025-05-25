@@ -10,6 +10,7 @@ import { PostNotFound } from "./postNotFound";
 import { AuthorOnlySwitch } from "./authorOnlySwitch";
 import { ListPagination } from "./pagination/listPagination";
 import { ItemsPerPage } from "./pagination/itemsPerPage";
+import { NewPostButton } from "../posts/nova/_components/newPostButton";
 
 export const PostList = () => {
   const { data, isLoading, error } = usePosts();
@@ -26,7 +27,8 @@ export const PostList = () => {
 
   return (
     <div className="w-[80%] min-w-96 my-6">
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between mb-4">
+        <NewPostButton />
         <ItemsPerPage />
       </div>
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
