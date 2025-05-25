@@ -101,7 +101,7 @@ export const EditPostDialog = ({ post, refetchPosts }: EditPostDialogProps) => {
             registration={register("title")}
           />
 
-          <div className="!">
+          <div>
             <label htmlFor="content" className="block mb-1 font-medium">
               Conteúdo
             </label>
