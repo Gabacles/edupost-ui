@@ -1,26 +1,55 @@
-FROM node:20-alpine
+# syntax=docker.io/docker/dockerfile:1
 
-WORKDIR /usr/app
+FROM node:20-alpine AS base
 
-COPY package.json ./
+# Instala compatibilidade com glibc
+RUN apk add --no-cache libc6-compat
 
-RUN npm install
+WORKDIR /app
 
+# Etapa de dependências
+FROM base AS deps
+
+COPY package.json package-lock.json* .npmrc* ./
+
+RUN npm ci
+
+# Etapa de build
+FROM base AS builder
+
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Passa variáveis de ambiente do GitHub Actions para o build
 ARG NEXT_PUBLIC_DOMAIN
 ARG NEXT_PUBLIC_SERVICES_BASE_URL
-
 ENV NEXT_PUBLIC_DOMAIN=$NEXT_PUBLIC_DOMAIN
 ENV NEXT_PUBLIC_SERVICES_BASE_URL=$NEXT_PUBLIC_SERVICES_BASE_URL
 
-RUN echo "NEXT_PUBLIC_DOMAIN=$NEXT_PUBLIC_DOMAIN" >> .env
-RUN echo "NEXT_PUBLIC_SERVICES_BASE_URL=$NEXT_PUBLIC_SERVICES_BASE_URL" >> .env
+RUN npm run build
 
-RUN npm i -g pnpm
+# Etapa de produção
+FROM base AS runner
 
-RUN pnpm build  
+WORKDIR /app
 
-EXPOSE 3000 
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
 
-CMD ["pnpm", "start"]
+# Cria usuário não-root
+RUN addgroup --system --gid 1001 nodejs \
+  && adduser --system --uid 1001 nextjs
+
+# Copia arquivos necessários do build
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
