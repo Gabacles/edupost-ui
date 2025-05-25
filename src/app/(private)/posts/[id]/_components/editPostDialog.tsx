@@ -76,13 +76,17 @@ export const EditPostDialog = ({ post, refetchPosts }: EditPostDialogProps) => {
           Editar
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[450px]">
+      <DialogContent className="max-md:h-screen max-md:!max-w-screen max-md:rounded-none flex flex-col ">
         <DialogHeader>
-          <DialogTitle>Editar Postagem</DialogTitle>
+          <DialogTitle className="text-edupost-blue-primary font-bold">
+            Editar Postagem
+          </DialogTitle>
           <DialogDescription>
             Edite os dados da postagem abaixo.
           </DialogDescription>
         </DialogHeader>
+
+        <hr className="border border-b-edupost-blue-primary max-md:hidden" />
 
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -104,13 +108,23 @@ export const EditPostDialog = ({ post, refetchPosts }: EditPostDialogProps) => {
             <Textarea
               id="content"
               placeholder="Conteúdo da postagem"
-              className="h-40 max-w-[460px]"
+              className="h-40 md:max-w-[460px]"
               {...register("content")}
             />
           </div>
 
-          <DialogFooter>
-            <Button type="submit">Salvar</Button>
+          <DialogFooter className="flex justify-center max-md:fixed max-md:bottom-0 max-md:gap-2 w-full max-md:mb-20">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-1/3 max-md:w-full"
+              onClick={() => setOpen(false)}
+            >
+              Cancelar
+            </Button>
+            <Button type="submit" className="w-1/3 max-md:w-full">
+              Salvar
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
