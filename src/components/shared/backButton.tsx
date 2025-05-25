@@ -1,3 +1,5 @@
+"use client";
+
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { cn } from "@/lib/utils";
 
