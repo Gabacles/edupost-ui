@@ -10,9 +10,9 @@ import { ptBR } from "date-fns/locale";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaUserGraduate } from "react-icons/fa";
 import { BackButton } from "@/components/shared/backButton";
-import { Button } from "@/components/shared/button";
 import { useUserStore } from "@/hooks/user/useUserStore";
 import { EditPostDialog } from "./_components/editPostDialog";
+import { ConfirmDeletePostDialog } from "./_components/confirmDeletePostDialog";
 
 const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
@@ -64,9 +64,7 @@ const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
         <div className="flex justify-center my-20">
           <EditPostDialog post={data} refetchPosts={refetch} />
 
-          <Button variant={"destructive"} className="w-1/2 max-w-[250px] ml-4">
-            Excluir
-          </Button>
+          <ConfirmDeletePostDialog post={data} refetchPosts={refetch} />
         </div>
       )}
     </div>
