@@ -84,3 +84,50 @@ export async function PUT(
     );
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
+  try {
+    const { id } = context.params;
+
+    const authToken = request.cookies.get("access_token")?.value;
+    if (!authToken) {
+      return NextResponse.json(
+        { error: "Token de autenticação ausente." },
+        { status: 401 }
+      );
+    }
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVICES_BASE_URL}/posts/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+
+    const isJson = res.headers
+      .get("content-type")
+      ?.includes("application/json");
+
+    const data = isJson ? await res.json() : null;
+
+    if (!res.ok) {
+      return NextResponse.json(data || { error: "Erro ao deletar post" }, {
+        status: res.status,
+      });
+    }
+
+    return NextResponse.json(data || { message: "Post deletado com sucesso" });
+  } catch (error) {
+    console.error("Erro ao deletar post:", error);
+    return NextResponse.json(
+      { error: "Erro inesperado ao deletar post." },
+      { status: 500 }
+    );
+  }
+}
