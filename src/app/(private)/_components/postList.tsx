@@ -8,7 +8,8 @@ import { SearchFilterInput } from "@/components/shared/searchFilterInput";
 import { PostListSkeleton } from "./postListSkeleton";
 import { PostNotFound } from "./postNotFound";
 import { AuthorOnlySwitch } from "./authorOnlySwitch";
-import { ListPagination } from "./listPagination";
+import { ListPagination } from "./pagination/listPagination";
+import { ItemsPerPage } from "./pagination/itemsPerPage";
 
 export const PostList = () => {
   const { data, isLoading, error } = usePosts();
@@ -25,6 +26,9 @@ export const PostList = () => {
 
   return (
     <div className="w-[80%] min-w-96 my-6">
+      <div className="flex justify-end mb-4">
+        <ItemsPerPage />
+      </div>
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
         <SearchFilterInput />
         <AuthorOnlySwitch />
