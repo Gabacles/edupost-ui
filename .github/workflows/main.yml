@@ -1,0 +1,39 @@
+name: Frontend - Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install -g pnpm && pnpm install
+
+      # - name: Run Lint and Tests
+      #   run: |
+      #     pnpm lint || true
+      #     pnpm test || true
+
+      - name: Build and Push Docker Image
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker build -t $DOCKER_USERNAME/edupost-ui:latest \
+            --build-arg NEXT_PUBLIC_DOMAIN=${{ secrets.NEXT_PUBLIC_DOMAIN }} \
+            --build-arg NEXT_PUBLIC_SERVICES_BASE_URL=${{ secrets.NEXT_PUBLIC_SERVICES_BASE_URL }} .
+          docker push $DOCKER_USERNAME/edupost-ui:latest
