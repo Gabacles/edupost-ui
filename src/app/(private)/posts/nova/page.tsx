@@ -9,14 +9,12 @@ export default function NovaPostagem() {
         Nova Postagem
       </h1>
 
-      <div className="max-w-[600px]">
-        <p className="text-gray-500 my-4">
+      <div className="max-w-[600px] text-gray-500">
+        <p className="my-4">
           Crie uma nova postagem para compartilhar com a comunidade.
         </p>
 
-        <p className="text-gray-500">
-          Preencha os campos abaixo para criar sua postagem:
-        </p>
+        <p>Preencha os campos abaixo para criar sua postagem:</p>
 
         <div className="mt-4">
           <CreatePostForm />
