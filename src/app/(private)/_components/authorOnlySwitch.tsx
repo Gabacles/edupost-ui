@@ -32,7 +32,7 @@ export const AuthorOnlySwitch = () => {
   const handleChange = (checked: boolean) => {
     const newQuery = updateQuery(
       "authorId",
-      checked ? authorId?.toString()! : "",
+      checked ? String(authorId ?? "") : "",
       ["page"]
     );
     router.push(newQuery);

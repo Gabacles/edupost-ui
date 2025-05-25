@@ -13,7 +13,7 @@ interface PostCardProps {
 }
 
 export const PostCard = ({ post }: PostCardProps) => {
-  const { title, content, author_id, createdAt, updatedAt, image } = post;
+  const { title, content, author_id, createdAt, image } = post;
   const formattedDate = format(new Date(createdAt), "dd MMM yyyy - HH:mm", {
     locale: ptBR,
   });

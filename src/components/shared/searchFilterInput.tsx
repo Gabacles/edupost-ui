@@ -45,8 +45,10 @@ export const SearchFilterInput = ({
   };
 
   useEffect(() => {
-    if (!params.get("search")) setInputValue("");
-  }, [params.get("search")]);
+    const searchParam = params.get("search");
+
+    if (!searchParam) setInputValue("");
+  }, [params]);
 
   const updateRouteParams = (searchedTerm: string) => {
     const newQuery = updateQuery("search", searchedTerm, ["page"]);

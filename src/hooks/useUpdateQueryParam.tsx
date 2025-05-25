@@ -7,7 +7,7 @@ export const useUpdateQueryParam = () => {
 
   const updateQuery = (key: string, value: string, removeKeys?: string[]) => {
     const query = append(key, value);
-    let searchParams = new URLSearchParams(query);
+    const searchParams = new URLSearchParams(query);
 
     if (removeKeys) {
       for (const key in removeKeys) {
@@ -24,7 +24,7 @@ export const useUpdateQueryParam = () => {
   };
 
   const removeParams = (keys: string[]) => {
-    let searchParams = new URLSearchParams(actualParams());
+    const searchParams = new URLSearchParams(actualParams());
 
     for (const key in keys) {
       searchParams.delete(keys[key]);

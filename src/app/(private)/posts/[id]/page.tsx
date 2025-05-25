@@ -16,7 +16,7 @@ import { ConfirmDeletePostDialog } from "./_components/confirmDeletePostDialog";
 
 const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
-  const { data, isLoading, error, refetch } = useGetPostById(id);
+  const { data, isLoading, refetch } = useGetPostById(id);
   const { getUserData } = useUserStore();
   const userData = getUserData();
   const canEditPost = userData?.id === data?.author_id.id;

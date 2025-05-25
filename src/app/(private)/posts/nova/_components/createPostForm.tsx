@@ -43,6 +43,7 @@ export const CreatePostForm = () => {
 
       router.push("/");
     } catch (error) {
+      console.error(error);
       toast.error("Erro ao criar postagem");
     }
   };
