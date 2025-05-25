@@ -76,7 +76,7 @@ export const EditPostDialog = ({ post, refetchPosts }: EditPostDialogProps) => {
           Editar
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-md:h-screen max-md:!max-w-screen max-md:rounded-none flex flex-col ">
+      <DialogContent className="max-md:h-screen max-md:!max-w-screen max-md:rounded-none flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-edupost-blue-primary font-bold">
             Editar Postagem
