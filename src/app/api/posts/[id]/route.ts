@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
+type Context = {
+  params: Promise<{ id: string }>;
+};
+
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: Context
 ) {
   try {
     const { id } = await context.params;
@@ -42,7 +46,7 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: Context
 ) {
   try {
     const { id } = await context.params;
@@ -87,10 +91,10 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: Context
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
 
     const authToken = request.cookies.get("access_token")?.value;
     if (!authToken) {

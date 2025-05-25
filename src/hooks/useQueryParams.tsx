@@ -8,14 +8,14 @@ export const useQueryParams = () => {
   const actualParams = () => {
     if (!window?.location) return "";
 
-    let searchParams = new URLSearchParams(window.location.search);
+    const searchParams = new URLSearchParams(window.location.search);
     return searchParams.toString();
   };
 
   const append = (key: string, value: string) => {
     if (!window?.location) return "";
 
-    let searchParams = new URLSearchParams(window.location.search);
+    const searchParams = new URLSearchParams(window.location.search);
     searchParams.set(key, value);
 
     return searchParams.toString();

@@ -15,3 +15,5 @@ export const EdupostLogo = memo(() => {
     </div>
   );
 });
+
+EdupostLogo.displayName = "EdupostLogo";

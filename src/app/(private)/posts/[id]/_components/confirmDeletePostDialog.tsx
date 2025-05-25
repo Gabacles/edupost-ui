@@ -58,7 +58,7 @@ export const ConfirmDeletePostDialog = ({
           <DialogDescription className="md:gap-4 gap-10 flex flex-col text-lg">
             Esta ação não pode ser desfeita. Isso excluirá permanentemente a
             postagem com o título:
-            <span className="font-bold !text-lg">"{postTitle}"</span>
+            <span className="font-bold !text-lg">{`"${postTitle}"`}</span>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex justify-center max-md:fixed max-md:bottom-0 max-md:gap-2 w-full max-md:mb-20">
