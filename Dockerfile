@@ -1,32 +1,26 @@
-FROM node:20-alpine AS builder
+FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /usr/app
 
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json ./
 
-RUN npm install -g pnpm && pnpm install
+RUN npm install
 
 COPY . .
+
+ARG NEXT_PUBLIC_DOMAIN
+ARG NEXT_PUBLIC_SERVICES_BASE_URL
 
 ENV NEXT_PUBLIC_DOMAIN=$NEXT_PUBLIC_DOMAIN
 ENV NEXT_PUBLIC_SERVICES_BASE_URL=$NEXT_PUBLIC_SERVICES_BASE_URL
 
-RUN pnpm build
+RUN echo "NEXT_PUBLIC_DOMAIN=$NEXT_PUBLIC_DOMAIN" >> .env
+RUN echo "NEXT_PUBLIC_SERVICES_BASE_URL=$NEXT_PUBLIC_SERVICES_BASE_URL" >> .env
 
-FROM node:20-alpine
+RUN npm i -g pnpm
 
-WORKDIR /app
+RUN pnpm build  
 
-RUN npm install -g pnpm
-
-COPY --from=builder /app/.next .next
-COPY --from=builder /app/public public
-COPY --from=builder /app/package.json .
-COPY --from=builder /app/pnpm-lock.yaml* ./
-COPY --from=builder /app/node_modules node_modules
-
-ENV NODE_ENV=production
-
-EXPOSE 3000
+EXPOSE 3000 
 
 CMD ["pnpm", "start"]
