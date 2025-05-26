@@ -7,12 +7,14 @@ import Link from "next/link";
 
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { ManagePostsMenu } from "./managePostsMenu";
 
 interface PostCardProps {
   post: Post;
+  refetchPosts: () => void;
 }
 
-export const PostCard = ({ post }: PostCardProps) => {
+export const PostCard = ({ post, refetchPosts }: PostCardProps) => {
   const { title, content, author_id, createdAt, image } = post;
   const formattedDate = format(new Date(createdAt), "dd MMM yyyy - HH:mm", {
     locale: ptBR,
@@ -23,6 +25,9 @@ export const PostCard = ({ post }: PostCardProps) => {
       href={`/posts/${post.id}`}
       className={`shadow-edu-shadow rounded-lg py-10 px-8 my-4 bg-edupost-blue hover:bg-edupost-blue-primary text-white relative flex flex-col gap-y-4 h-[300px] transition-colors`}
     >
+      <div className="absolute top-2 right-2 z-20">
+        <ManagePostsMenu post={post} refetchPosts={refetchPosts} />
+      </div>
       <h2 className="text-3xl font-bold sm:max-w-1/2 line-clamp-2">{title}</h2>
       <p className="sm:max-w-1/2 line-clamp-2">{content}</p>
 
@@ -46,7 +51,10 @@ export const PostCard = ({ post }: PostCardProps) => {
         />
       </div>
 
-      <Button variant={"secondary"} className="sm:w-50 w-full max-w-[83%] absolute bottom-6">
+      <Button
+        variant={"secondary"}
+        className="sm:w-50 w-full max-w-[83%] absolute bottom-6"
+      >
         Mais sobre
       </Button>
     </Link>

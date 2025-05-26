@@ -16,15 +16,19 @@ import { useDeletePostById } from "@/hooks/posts/useDeleteById";
 
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface ConfirmDeletePostDialogProps {
   post: Post;
-  refetchPosts: () => void;
+  refetchPosts?: () => void;
+  renderAsButton?: boolean;
 }
 
 export const ConfirmDeletePostDialog = ({
   post,
   refetchPosts,
+  renderAsButton = true,
 }: ConfirmDeletePostDialogProps) => {
   const { title: postTitle, id: postId } = post;
 
@@ -35,10 +39,12 @@ export const ConfirmDeletePostDialog = ({
   const handleDelete = async () => {
     try {
       await mutateAsync();
-      refetchPosts();
+
+      if (refetchPosts) refetchPosts();
+
       toast.success("Postagem deletada com sucesso");
 
-      router.push("/posts");
+      if (renderAsButton) router.push("/");
     } catch (error) {
       console.error("Error deleting post:", error);
       toast.error("Erro ao deletar postagem");
@@ -48,8 +54,15 @@ export const ConfirmDeletePostDialog = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={"destructive"} className="w-1/2 max-w-[250px] ml-4">
+        <Button
+          variant={renderAsButton ? "destructive" : "ghost"}
+          className={cn(
+            "w-1/2 max-w-[250px] ml-4",
+            !renderAsButton && "w-full ml-0 justify-between"
+          )}
+        >
           Excluir
+          {!renderAsButton && <FaTrashAlt />}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-md:h-screen max-md:!max-w-screen max-md:rounded-none flex flex-col">

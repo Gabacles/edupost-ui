@@ -13,7 +13,7 @@ import { ItemsPerPage } from "./pagination/itemsPerPage";
 import { NewPostButton } from "../posts/nova/_components/newPostButton";
 
 export const PostList = () => {
-  const { data, isLoading } = usePosts();
+  const { data, isLoading, refetch } = usePosts();
   const posts: Post[] = data?.data || [];
   const totalPages = data?.totalPages || 0;
 
@@ -26,7 +26,7 @@ export const PostList = () => {
   });
 
   return (
-    <div className="w-[80%] min-w-96 my-6">
+    <div className="w-[80%] min-w-96 my-4">
       <div className="flex justify-between mb-4">
         <NewPostButton />
         <ItemsPerPage />
@@ -43,7 +43,7 @@ export const PostList = () => {
         <>
           <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-4">
             {postsWithImages.map((post) => (
-              <PostCard key={post.id} post={post} />
+              <PostCard key={post.id} post={post} refetchPosts={refetch} />
             ))}
           </div>
           <div className="flex items-center justify-center mt-6">

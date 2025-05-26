@@ -13,6 +13,7 @@ import { BackButton } from "@/components/shared/backButton";
 import { useUserStore } from "@/hooks/user/useUserStore";
 import { EditPostDialog } from "./_components/editPostDialog";
 import { ConfirmDeletePostDialog } from "./_components/confirmDeletePostDialog";
+import { PostDetailsSkeleton } from "./_components/postDetailsSkeleton";
 
 const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
@@ -20,7 +21,7 @@ const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { getUserData } = useUserStore();
   const userData = getUserData();
   const canEditPost = userData?.id === data?.author_id.id;
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <PostDetailsSkeleton />;
 
   const randomIndex = Math.floor(Math.random() * randomImages.length);
   const randomImage = randomImages[randomIndex];
@@ -32,7 +33,7 @@ const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-20">
       <div className="bg-edupost-blue w-full grid md:grid-cols-2 grid-cols-1 items-center px-[10%] p-16 mb-4 relative">
         <BackButton className="absolute left-5 top-5" />
         <div className="flex flex-col gap-4 max-md:text-center">
