@@ -35,13 +35,13 @@ export const SigninForm = () => {
       await mutateAsync(data);
 
       setIsInvalidCredentials(false);
+
+      router.push("/");
     } catch (error: any) {
       if (error?.message === "invalid credentials") {
         setIsInvalidCredentials(true);
       }
       console.error("Erro ao fazer login:", error);
-    } finally {
-      router.push("/");
     }
   };
 
