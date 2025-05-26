@@ -4,8 +4,6 @@ export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
 
-    console.log("env:", process.env.NEXT_PUBLIC_SERVICES_BASE_URL);
-
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_SERVICES_BASE_URL}/auth/login`,
       {
@@ -16,9 +14,6 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({ email, password }),
       }
     );
-
-    console.log("Response from login:", res);
-    console.log("env:", process.env.NEXT_PUBLIC_SERVICES_BASE_URL);
 
     const data = await res.json();
 
