@@ -58,10 +58,9 @@ export const RegisterForm = () => {
       await mutateAsync(userData);
 
       toast.success("Cadastro realizado com sucesso!");
+      router.push("/sign-in");
     } catch (error) {
       console.error("Erro ao fazer registro:", error);
-    } finally {
-      router.push("/sign-in");
     }
   };
 
