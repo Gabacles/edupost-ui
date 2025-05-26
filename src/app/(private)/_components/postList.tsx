@@ -13,7 +13,7 @@ import { ItemsPerPage } from "./pagination/itemsPerPage";
 import { NewPostButton } from "../posts/nova/_components/newPostButton";
 
 export const PostList = () => {
-  const { data, isLoading, error } = usePosts();
+  const { data, isLoading } = usePosts();
   const posts: Post[] = data?.data || [];
   const totalPages = data?.totalPages || 0;
 
