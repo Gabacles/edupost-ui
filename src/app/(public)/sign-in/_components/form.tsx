@@ -14,6 +14,9 @@ import {
 import { useLogin } from "@/hooks/auth/useLogin";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/hooks/user/useUserStore";
+import { jwtDecode } from "jwt-decode";
+import { User } from "@/models/types/user";
 
 export const SigninForm = () => {
   const {
@@ -29,12 +32,25 @@ export const SigninForm = () => {
     useState<boolean>(false);
   const { mutateAsync, isPending } = useLogin();
   const router = useRouter();
+  const { setUserData } = useUserStore();
 
   const handleSignInUser = async (data: SignInFormSchema) => {
     try {
-      await mutateAsync(data);
+      const res = await mutateAsync(data);
 
       setIsInvalidCredentials(false);
+
+      const token = res?.access_token;
+      const decodedToken = jwtDecode(token) as User;
+      const userData = {
+        id: decodedToken.id,
+        name: decodedToken.name,
+        username: decodedToken.username,
+        email: decodedToken.email,
+        roles: decodedToken.roles,
+      };
+
+      setUserData(userData);
 
       router.push("/");
     } catch (error: any) {
