@@ -23,12 +23,14 @@ import {
 import { useRegister } from "@/hooks/auth/useRegister";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 
 export const RegisterForm = () => {
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema),
@@ -42,8 +44,15 @@ export const RegisterForm = () => {
     { value: UserRoles.STUDENT, label: strings.userRoles[UserRoles.STUDENT] },
     { value: UserRoles.TEACHER, label: strings.userRoles[UserRoles.TEACHER] },
   ];
+  const password = watch("password");
+  const confirmPassword = watch("confirmPassword");
+  const hasPasswordMismatch = useMemo(() => {
+    return password && confirmPassword && password !== confirmPassword;
+  }, [password, confirmPassword]);
 
   const handleRegisterUser = async (data: RegisterFormSchema) => {
+    if (hasPasswordMismatch) return;
+
     try {
       const { name, userName, email, password, role } = data;
 
@@ -106,15 +115,22 @@ export const RegisterForm = () => {
             error={errors.password}
           />
 
-          <FormInput
-            name="confirmPassword"
-            type="password"
-            maxLength={25}
-            placeholder="confirme sua senha"
-            className="w-full"
-            registration={register("confirmPassword")}
-            error={errors.confirmPassword}
-          />
+          <div>
+            <FormInput
+              name="confirmPassword"
+              type="password"
+              maxLength={25}
+              placeholder="confirme sua senha"
+              className="w-full"
+              registration={register("confirmPassword")}
+              error={errors.confirmPassword}
+            />
+            {!errors.confirmPassword && hasPasswordMismatch && (
+              <span className="text-red-500 text-sm">
+                As senhas não coincidem
+              </span>
+            )}
+          </div>
 
           <div>
             <Select
