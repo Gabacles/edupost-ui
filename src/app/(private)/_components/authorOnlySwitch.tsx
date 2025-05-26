@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { Switch } from "@/components/shared/switch";
 import { useUserStore } from "@/hooks/user/useUserStore";
 import { useUpdateQueryParam } from "@/hooks/useUpdateQueryParam";
@@ -9,24 +8,28 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { UserRoles } from "@/models/types/user";
 
 export const AuthorOnlySwitch = () => {
+  const [isHydrated, setIsHydrated] = useState(false);
   const [authorId, setAuthorId] = useState<number | undefined>();
   const [authorRole, setAuthorRole] = useState<UserRoles | undefined>();
+
   const { getUserData } = useUserStore();
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const user = getUserData();
-    setAuthorId(user?.id);
-    setAuthorRole(user?.roles);
-    setIsLoaded(true);
-  }, [getUserData]);
-
-  
   const router = useRouter();
   const params = useSearchParams();
   const { updateQuery } = useUpdateQueryParam();
-  if (!isLoaded) return null;
-  if (authorRole !== UserRoles.TEACHER) return null;
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    const user = getUserData();
+    setAuthorId(user?.id);
+    setAuthorRole(user?.roles);
+  }, [isHydrated, getUserData]);
+
+  if (!isHydrated || authorRole !== UserRoles.TEACHER) return null;
 
   const isAuthorOnly = params.get("authorId") === authorId?.toString();
 
