@@ -14,7 +14,7 @@ export const ItemsPerPage = () => {
   const router = useRouter();
   const params = useSearchParams();
   const { updateQuery } = useUpdateQueryParam();
-  const [selectedSize, setSelectedSize] = useState(params.get("limit") || "6");
+  const [selectedSize, setSelectedSize] = useState(params.get("limit") || "4");
 
   const handleSizeChange = (limit: string) => {
     setSelectedSize(limit);
@@ -46,7 +46,7 @@ export const ItemsPerPage = () => {
         }}
         side="top"
       >
-        {["6", "12", "30", "50", "80", "100"].map((pageSize) => (
+        {["4", "12", "30", "50", "80", "100"].map((pageSize) => (
           <SelectItem key={pageSize} value={pageSize}>
             {`${pageSize} itens por página`}
           </SelectItem>

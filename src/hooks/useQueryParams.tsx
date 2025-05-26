@@ -34,7 +34,7 @@ export const useQueryParams = () => {
 
     const sufix = !!query ? "&" : "?";
 
-    if (!query.includes("limit")) query += sufix + `limit=${6}`;
+    if (!query.includes("limit")) query += sufix + `limit=${4}`;
 
     return query;
   };
