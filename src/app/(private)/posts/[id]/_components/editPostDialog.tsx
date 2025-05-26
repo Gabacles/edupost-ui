@@ -23,13 +23,20 @@ import {
 
 import { useUpdatePostById } from "@/hooks/posts/usePatchPostById";
 import { toast } from "react-toastify";
+import { cn } from "@/lib/utils";
+import { MdEdit } from "react-icons/md";
 
 interface EditPostDialogProps {
   post: Post;
-  refetchPosts: () => void;
+  refetchPosts?: () => void;
+  renderAsButton?: boolean;
 }
 
-export const EditPostDialog = ({ post, refetchPosts }: EditPostDialogProps) => {
+export const EditPostDialog = ({
+  post,
+  refetchPosts,
+  renderAsButton = true,
+}: EditPostDialogProps) => {
   const { title, content, id } = post;
   const { mutateAsync } = useUpdatePostById(id);
 
@@ -59,7 +66,7 @@ export const EditPostDialog = ({ post, refetchPosts }: EditPostDialogProps) => {
 
       await mutateAsync(postData);
 
-      refetchPosts();
+      if (refetchPosts) refetchPosts();
 
       toast.success("Postagem editada com sucesso!");
       setOpen(false);
@@ -72,8 +79,15 @@ export const EditPostDialog = ({ post, refetchPosts }: EditPostDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-1/2 max-w-[250px]">
+        <Button
+          variant={renderAsButton ? "outline" : "ghost"}
+          className={cn(
+            "w-1/2 max-w-[250px]",
+            !renderAsButton && "w-full ml-0 justify-between"
+          )}
+        >
           Editar
+          {!renderAsButton && <MdEdit />}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-md:h-screen max-md:!max-w-screen max-md:rounded-none flex flex-col">
