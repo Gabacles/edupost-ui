@@ -40,10 +40,13 @@ export const UserMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div className="flex items-center gap-2">
-          <span>
+          <span className="hidden md:inline-block">
             Olá, <strong className="text-edupost-blue">{userName}</strong>
           </span>
-          <LuCircleUser size={30} className="hover:text-edupost-blue-primary transition-colors cursor-pointer" />
+          <LuCircleUser
+            size={30}
+            className="hover:text-edupost-blue-primary transition-colors cursor-pointer"
+          />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-44">
