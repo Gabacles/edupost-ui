@@ -32,7 +32,7 @@ const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-20">
       <div className="bg-edupost-blue w-full grid md:grid-cols-2 grid-cols-1 items-center px-[10%] p-16 mb-4 relative">
         <BackButton className="absolute left-5 top-5" />
         <div className="flex flex-col gap-4 max-md:text-center">
