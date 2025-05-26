@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import { Switch } from "@/components/shared/switch";
 import { useUserStore } from "@/hooks/user/useUserStore";
 import { useUpdateQueryParam } from "@/hooks/useUpdateQueryParam";
@@ -9,21 +7,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { UserRoles } from "@/models/types/user";
 
 export const AuthorOnlySwitch = () => {
-  const [authorId, setAuthorId] = useState<number | undefined>();
-  const [authorRole, setAuthorRole] = useState<UserRoles | undefined>(
-    UserRoles.STUDENT
-  );
-  const { getUserData } = useUserStore();
-
-  useEffect(() => {
-    const user = getUserData();
-    setAuthorId(user?.id);
-    setAuthorRole(user?.roles);
-  }, [getUserData]);
-
+  const hasHydrated = useUserStore((state) => state.hasHydrated);
+  const user = useUserStore((state) => state.getUserData());
   const router = useRouter();
   const params = useSearchParams();
   const { updateQuery } = useUpdateQueryParam();
+
+  if (!hasHydrated) return null;
+
+  const authorId = user?.id;
+  const authorRole = user?.roles;
 
   if (authorRole !== UserRoles.TEACHER) return null;
 

@@ -5,19 +5,21 @@ import { persist } from "zustand/middleware";
 
 interface IUserStore {
   userData?: User;
+  hasHydrated: boolean;
   setUserData: (userData: User) => void;
   getUserData: () => User | undefined;
   getUserRole: () => UserRoles | null;
   clearUserData: () => void;
+  setHasHydrated: (value: boolean) => void;
 }
 
 export const useUserStore = create<IUserStore>()(
   persist(
     (set, get) => ({
+      userData: undefined,
+      hasHydrated: false,
       setUserData: (userData: User) => set(() => ({ userData })),
-      getUserData: () => {
-        return get().userData;
-      },
+      getUserData: () => get().userData,
       getUserRole: () => {
         const user = get().userData;
         return user ? user.roles : null;
@@ -25,9 +27,13 @@ export const useUserStore = create<IUserStore>()(
       clearUserData: () => {
         useUserStore.persist.clearStorage();
       },
+      setHasHydrated: (value: boolean) => set({ hasHydrated: value }),
     }),
     {
       name: "user-storage",
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );
