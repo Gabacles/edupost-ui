@@ -82,7 +82,7 @@ export const EditPostDialog = ({
         <Button
           variant={renderAsButton ? "outline" : "ghost"}
           className={cn(
-            "w-1/2 max-w-[250px]",
+            "sm:w-1/2 sm:max-w-[250px]",
             !renderAsButton && "w-full ml-0 justify-between"
           )}
         >
