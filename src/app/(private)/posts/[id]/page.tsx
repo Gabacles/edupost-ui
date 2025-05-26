@@ -13,6 +13,7 @@ import { BackButton } from "@/components/shared/backButton";
 import { useUserStore } from "@/hooks/user/useUserStore";
 import { EditPostDialog } from "./_components/editPostDialog";
 import { ConfirmDeletePostDialog } from "./_components/confirmDeletePostDialog";
+import { PostDetailsSkeleton } from "./_components/postDetailsSkeleton";
 
 const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
@@ -20,7 +21,7 @@ const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { getUserData } = useUserStore();
   const userData = getUserData();
   const canEditPost = userData?.id === data?.author_id.id;
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <PostDetailsSkeleton />;
 
   const randomIndex = Math.floor(Math.random() * randomImages.length);
   const randomImage = randomImages[randomIndex];
