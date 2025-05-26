@@ -26,7 +26,7 @@ export const PostList = () => {
   });
 
   return (
-    <div className="w-[80%] min-w-96 my-4">
+    <div className="w-[80%] min-w-[355px] my-4">
       <div className="flex justify-between mb-4">
         <NewPostButton />
         <ItemsPerPage />

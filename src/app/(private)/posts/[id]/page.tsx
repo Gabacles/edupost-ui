@@ -62,7 +62,7 @@ const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
       <p className="px-[10%] lg:text-2xl text-lg mt-10">{content}</p>
 
       {canEditPost && (
-        <div className="flex justify-center my-20">
+        <div className="flex sm:flex-row flex-col-reverse !justify-center my-20 mx-4 gap-4">
           <EditPostDialog post={data} refetchPosts={refetch} />
 
           <ConfirmDeletePostDialog post={data} refetchPosts={refetch} />
