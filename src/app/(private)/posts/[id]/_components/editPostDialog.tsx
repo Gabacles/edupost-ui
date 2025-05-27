@@ -83,7 +83,7 @@ export const EditPostDialog = ({
           variant={renderAsButton ? "outline" : "ghost"}
           className={cn(
             "sm:w-1/2 sm:max-w-[250px]",
-            !renderAsButton && "w-full ml-0 justify-between"
+            !renderAsButton && "!w-full ml-0 justify-between"
           )}
         >
           Editar
