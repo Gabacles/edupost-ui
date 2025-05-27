@@ -58,7 +58,7 @@ export const ConfirmDeletePostDialog = ({
           variant={renderAsButton ? "destructive" : "ghost"}
           className={cn(
             "sm:w-1/2 sm:max-w-[250px] sm:ml-4",
-            !renderAsButton && "w-full ml-0 justify-between"
+            !renderAsButton && "!w-full !ml-0 justify-between"
           )}
         >
           Excluir
