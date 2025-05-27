@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Post } from "@/models/types/post";
 import { Button } from "@/components/shared/button";
 import Image from "next/image";
@@ -8,6 +11,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ManagePostsMenu } from "./managePostsMenu";
+import { cn } from "@/lib/utils";
 
 interface PostCardProps {
   post: Post;
@@ -15,6 +19,7 @@ interface PostCardProps {
 }
 
 export const PostCard = ({ post, refetchPosts }: PostCardProps) => {
+  const [isLoading, setIsLoading] = useState(true);
   const { title, content, author_id, createdAt, image } = post;
   const formattedDate = format(new Date(createdAt), "dd MMM yyyy - HH:mm", {
     locale: ptBR,
@@ -42,12 +47,19 @@ export const PostCard = ({ post, refetchPosts }: PostCardProps) => {
         </div>
       </div>
 
-      <div className="absolute max-sm:hidden top-2 right-2">
+      <div className="absolute max-sm:hidden top-6 right-7">
+        {isLoading && (
+          <div className="absolute rounded inset-0 animate-pulse bg-gray-500" />
+        )}
         <Image
           src={image}
           alt="Post Image"
-          className="rounded-lg max-xl:w-40 max-lg:w-60 w-60 object-cover"
+          className={cn(
+            "rounded-lg max-xl:w-40 max-lg:w-60 w-60 object-cover transition-opacity duration-500",
+            isLoading ? "opacity-0" : "opacity-100"
+          )}
           priority
+          onLoadingComplete={() => setIsLoading(false)}
         />
       </div>
 
